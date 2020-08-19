@@ -58,7 +58,18 @@ class Graph:
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        # Create an empty Stack and enqueue the starting_vertex.
+        # Create an empty set to track visited verties
+
+        # while the stack is not empty,
+        #     get current vertex (pop from stack)
+
+        #     check if the current vertex has not been visited, if it hasn't:
+        #       print the current vertex.
+        #       mark the current vertex as visited
+        #           add the current vertex to a visited_set
+
+        #     push up all current vertices neighbors so we can visit them next
 
     def dft_recursive(self, starting_vertex):
         """
@@ -75,7 +86,25 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass  # TODO
+        # Create an empty queue and enqueue the PATH TO starting_vertex.
+        # Create an empty set to track visited verties
+
+        # while the queue is not empty,
+        #     get current vertex (dequeue from queue)
+        #     set the current vertex to the LAST element of the path.
+
+        #     check if the current vertex has not been visited, if it hasn't:
+
+        #       CHECK IF THE CURRENT VERTEX IS DESTINATION
+        #       if it is, stop and return
+
+        #       mark the current vertex as visited
+        #           add the current vertex to a visited_set
+
+        #       queue up NEW paths with each neighbor:
+        #           Take current path
+        #           append neightbor to it
+        #           queue up NEW path
 
     def dfs(self, starting_vertex, destination_vertex):
         """

@@ -1,7 +1,7 @@
 """
 Simple graph implementation
 """
-from util import Stack, Queue  # These may come in handy
+from util_copy import Stack, Queue  # These may come in handy
 
 
 class Graph:
@@ -103,27 +103,32 @@ class Graph:
         """
         box = Queue()  # Create an empty queue and enqueue the PATH TO starting_vertex.
         visited_vert = set()  # Create an empty set to track visited verties
-        box.enqueue([starting_vertex])
+        box.enqueue({
+            "current_vertex": starting_vertex,
+            "path": [starting_vertex]
+        })
         while box.size() > 0:  # while the queue is not empty
 
-            current_path = box.dequeue()  # get current vertex (dequeue from queue)
-
+            current_obj = box.dequeue()  # get current vertex (dequeue from queue)
+            current_path = current_obj["path"]
+            current_vertex = current_obj['current_vertex']
             # set the current vertex to the LAST element of the path.
-            # print(current_path)
-            node = current_path[-1]
-
-            if node is destination_vertex:  # CHECK IF THE CURRENT VERTEX IS DESTINATION
+            if current_vertex is destination_vertex:  # CHECK IF THE CURRENT VERTEX IS DESTINATION
                 return current_path  # if it is, stop and return
             # check if the current vertex has not been visited, if it hasn't:
-            if node not in visited_vert:  # mark the current vertex as visited
+            if current_vertex not in visited_vert:  # mark the current vertex as visited
                 # add the current vertex to a visited_set
-                visited_vert.add(node)
+                visited_vert.add(current_vertex)
 
                 # queue up NEW paths with each neighbor:
-                for neighbor in self.get_neighbors(node):
-                    copy_path = current_path.copy()  # Take current path
-                    copy_path.append(neighbor)  # append neightbor to it
-                    box.enqueue(copy_path)  # queue up NEW path
+                for neighbor in self.get_neighbors(current_vertex):
+                    new_path = list(current_path)  # Take current path
+                    new_path.append(neighbor)  # append neightbor to it
+                    box.enqueue({
+                        "current_vertex": neighbor,
+                        "path": new_path
+                    })  # queue up NEW path
+        return None
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -131,22 +136,34 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        box = Stack()
-        visited_vert = set()
-        box.push([starting_vertex])
-        while box.size() > 0:
-            current_path = box.pop()
-            node = current_path[-1]
+        box = Stack()  # Create an empty queue and enqueue the PATH TO starting_vertex.
+        visited_vert = set()  # Create an empty set to track visited verties
+        box.push({
+            "current_vertex": starting_vertex,
+            "path": [starting_vertex]
+        })
+        while box.size() > 0:  # while the queue is not empty
 
-            if node is destination_vertex:
-                return current_path
-            if node not in visited_vert:
-                visited_vert.add(node)
+            current_obj = box.pop()  # get current vertex (dequeue from queue)
+            current_path = current_obj["path"]
+            current_vertex = current_obj['current_vertex']
+            # set the current vertex to the LAST element of the path.
+            if current_vertex is destination_vertex:  # CHECK IF THE CURRENT VERTEX IS DESTINATION
+                return current_path  # if it is, stop and return
+            # check if the current vertex has not been visited, if it hasn't:
+            if current_vertex not in visited_vert:  # mark the current vertex as visited
+                # add the current vertex to a visited_set
+                visited_vert.add(current_vertex)
 
-                for neighbor in self.get_neighbors(node):
-                    copy_path = current_path.copy()
-                    copy_path.append(neighbor)
-                    box.push(copy_path)
+                # queue up NEW paths with each neighbor:
+                for neighbor in self.get_neighbors(current_vertex):
+                    new_path = list(current_path)  # Take current path
+                    new_path.append(neighbor)  # append neightbor to it
+                    box.push({
+                        "current_vertex": neighbor,
+                        "path": new_path
+                    })  # queue up NEW path
+        return None
 
     def dfs_recursive(self, starting_vertex, destination_vertex, visited=set(), path=[]):
         """
@@ -197,7 +214,7 @@ if __name__ == '__main__':
     Should print:
         {1: {2}, 2: {3, 4}, 3: {5}, 4: {6, 7}, 5: {3}, 6: {3}, 7: {1, 6}}
     '''
-    # print(graph.vertices)
+    print(graph.vertices)
 
     '''
     Valid BFT paths:
@@ -214,7 +231,7 @@ if __name__ == '__main__':
         1, 2, 4, 3, 7, 6, 5
         1, 2, 4, 3, 7, 5, 6
     '''
-    graph.bft(1)
+    # graph.bft(1)
 
     '''
     Valid DFT paths:
@@ -237,5 +254,5 @@ if __name__ == '__main__':
         [1, 2, 4, 6]
         [1, 2, 4, 7, 6]
     '''
-    # print(graph.dfs(1, 6))
-    # print(graph.dfs_recursive(1, 6))
+    print(graph.dfs(1, 6))
+    print(graph.dfs_recursive(1, 6))

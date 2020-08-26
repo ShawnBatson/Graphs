@@ -147,6 +147,8 @@ Stretch Question:
 
 1.  This isn't necessarily surprising.  The randomization causes an order to the chaos. Real life would be much more structured, including variables such as having in common: work, hobbies, interests, etc, and because of this, I would not expect it in real life.  The actual average degrees of separation, according to multiple articles, and specifically facebooks testing group, is 3.57 degrees of separation within clusters, spanning millions of people.  This in itself is a bit surprising, because the clusters are expansive.  You could essentially improve it by adding clusters of variables that show reasons for the connection being made, and removing some of the randomness.
 
+Source: https://research.fb.com/blog/2016/02/three-and-a-half-degrees-of-separation/
+
 '''
 
 

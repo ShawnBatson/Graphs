@@ -192,8 +192,7 @@ def check_exits(exits):
 def lets_go(room):
     if previous_room not in visited:  # if the previous room is not in visited
         visited.add(previous_room)  # add it to visited
-    # grab the int part of the prev room name
-    # current_room has not been updated to 'new room' yet
+    # grab the integer part of the prev room name
     # split the name of the previous room
     split_room = previous_room.name.split(' ')
     previous_index = int(split_room[1])  # set that to previous index

@@ -56,3 +56,6 @@ def earliest_ancestor(ancestors, starting_node):
     # the minimum of the parent_box is the farthest from the starting node
     oldest_ancestor = min(parent_box)
     return oldest_ancestor  # return it
+
+
+# note for pull request

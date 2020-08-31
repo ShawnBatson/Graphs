@@ -77,8 +77,8 @@ class SocialGraph:
         # avoid duplicate friendships
         possible_friendships = []
         for user_id in self.users:
-            for friend_id in range(user_id + 1, self.last_id + 1):
-                # user_id == user_id_2 cannot happen
+            for friend_id in range(user_id + 1, len(self.users.keys())):  # CHANGED
+                # user_id == user_id_2 cannot ha ppen
                 # if friendship between user_id and user_id_2 already exists,
                 #   don't add friendship between user_2 and user
                 possible_friendships.append((user_id, friend_id))
@@ -106,32 +106,30 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
-
+        # create a queue
+        queue = Queue()
+        # create a set of visited prevoius seen vertices
         visited = {}  # Note that this is a dictionary, not a set
-        box = Queue()  # create a standard BFT
-        # ENQUEUE THE LIST OBJECT TO ITERATE OVER (ARRAY)
-        box.enqueue([user_id])
-        chain = []  # make a list of paths
-        while box.size() > 0:
-            current_path = box.dequeue()
-            current_user = current_path[-1]
-
-            if current_user not in visited:  # if current user is not in visited
-                # print(current_path)
-                # visited at current user is the current path
-                visited[current_user] = current_path
-
-                # for the frien in get friends
-                for friend in self.get_friends(current_user):
-                    copy_path = current_path.copy()  # make a copy
-                    # append the friend to copied path
-                    copy_path.append(friend)
-                    # append to the chain length of the copy path
-                    chain.append(len(copy_path))
-                    box.enqueue(copy_path)  # enqueue the copied path
-
-        # get the avg degrees of separation
-        print('avg degrees of separation:', sum(chain)/len(chain))
+        # add first user id to the queue AS A PATH
+        queue.enqueue([user_id])
+        # While the queue is not empty
+        while queue.size() > 0:
+            current_path = queue.dequeue()
+            # dequeue a current path
+            # get the current vertex from end of path
+            current_vertex = current_path[-1]
+            if current_vertex not in visited:
+                # add vertex to visited set
+                visited[current_vertex] = current_path
+                # also add the path that brought us to this vertex
+                # i.e. add a key and value to the visited dictionary
+                # the key is the current vertex, and the value is the path
+                # queue up all neighbors as paths
+                for neighbor in self.friendships[current_vertex]:
+                    # make a new copy of the current path
+                    new_path = current_path.copy()
+                    new_path.append(neighbor)
+                    queue.enqueue(new_path)
 
         return visited
 
@@ -154,7 +152,7 @@ Source: https://research.fb.com/blog/2016/02/three-and-a-half-degrees-of-separat
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populate_graph(1000, 5)
+    sg.populate_graph(5, 2)
     print(sg.friendships)
     connections = sg.get_all_social_paths(1)
     print(connections)
